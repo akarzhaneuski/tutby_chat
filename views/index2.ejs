@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="us">
+<head>
+    <meta charset="utf-8">
+    <title>RACH</title>
+    <link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+    <script src="js/jquery-1.9.1.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.js"></script>
+
+    <style>
+        .hoov1 {
+            background-color: #eaf5f7;
+        }
+
+        label {
+            display: inline-block;
+            width: 5em;
+        }
+    </style>
+</head>
+<body>
+
+<div style="display:table;">
+    <div style="display:table-cell;">
+        <div id="user_panel" style="width: 300px; border: #a6c9e2 1px solid; margin-bottom: 10px; border-radius: 5px;">
+            <div id="user_nickname"
+                 style="border-bottom: #a6c9e2 1px solid; margin-bottom: 10px; height: 30px; padding-left: 10px; padding-top: 5px;"
+                 class="hoov">
+                <span class="ui-icon ui-icon-circle-triangle-s" style="display: inline-block;"></span>
+                <span>Clasker</span>
+            </div>
+
+            <div style="padding-left: 10px; margin-bottom: 10px;">
+                <div style="width: 40px; height: 40px; padding-top: 5px; padding-left: 5px; display: inline-block;"
+                     class="hoov">
+                    <label for="show_news"/>
+                    <img class="hoov" id="show_news" src="img/add.jpg" width="30" height="30"
+                         alt="Добавить контакт" title="Просмотр новостей"/>
+                </div>
+
+                <div style="width: 40px; height: 40px; padding-top: 5px; padding-left: 5px; display: inline-block;"
+                     class="hoov">
+                    <label for="add_contact"/>
+                    <img class="hoov" id="add_contact" src="img/add.jpg" width="30" height="30"
+                         alt="Добавить контакт" title="Добавить контакт"/>
+                </div>
+
+                <div style="width: 40px; height: 40px; padding-top: 5px; padding-left: 5px; display: inline-block;"
+                     class="hoov">
+                    <label for="create_chat"/>
+                    <img class="hoov" id="create_chat" src="img/add.jpg" width="30" height="30"
+                         alt="Добавить контакт" title="Создать чат"/>
+                </div>
+            </div>
+
+            <div style="padding-bottom: 10px; padding-left: 10px;">
+                <input name="search" placeholder="Поиск">
+            </div>
+
+        </div>
+
+        <div id="left_panel" style="width: 300px; height: 100%;">
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tab1">Контакты</a></li>
+                    <li><a href="#tab2">Последние</a></li>
+                </ul>
+                <div id="tab1" style="padding: 0px;">
+                    <div style="width: 280px; height: 50px; padding-top: 2px; padding-left: 10px;" class="hoov">
+                        <img width="40px" height="40px" src="../../img/def_user.jpg" style="vertical-align: middle;"/>
+                        <img width="20px" height="20px" src="../../img/blocked.png"/>
+                        Meepo
+                    </div>
+
+                    <div style="width: 280px; height: 50px; padding-top: 2px; padding-left: 10px;" class="hoov">
+                        <img width="40px" height="40px" src="../../img/def_user.jpg" style="vertical-align: middle;"/>
+                        <img width="20px" height="20px" src="../../img/away.png"/>
+                        Timbersaw
+                    </div>
+                    <div style="width: 280px; height: 50px; padding-top: 2px; padding-left: 10px;" class="hoov">
+                        <img width="40px" height="40px" src="../../img/def_user.jpg" style="vertical-align: middle;"/>
+                        <img width="20px" height="20px" src="../../img/offline.png"/>
+                        Antimage
+                    </div>
+                    <div style="width: 280px; height: 50px; padding-top: 2px; padding-left: 10px;" class="hoov">
+                        <img width="40px" height="40px" src="../../img/def_user.jpg" style="vertical-align: middle;"/>
+                        <img width="20px" height="20px" src="../../img/offline.png"/>
+                        Batrider
+                    </div>
+                    <div style="width: 280px; height: 50px; padding-top: 2px; padding-left: 10px;" class="hoov">
+                        <img width="40px" height="40px" src="../../img/def_user.jpg" style="vertical-align: middle;"/>
+                        <img width="20px" height="20px" src="../../img/offline.png"/>
+                        Invoker
+                    </div>
+
+
+                </div>
+                <div id="tab2">...</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="content" style="display:table-cell; width: 100%; padding-left: 10px;">
+        <div style="border-bottom: #a6c9e2 1px solid; width: 100%;">
+            <h1> Главная страница</h1>
+        </div>
+        <h3>ываываываываываав</h3>
+    </div>
+
+</div>
+
+
+<script>
+    $("#tabs").tabs();
+    $(".hoov").hover(
+            function () {
+                $(this).toggleClass("hoov1");
+            }, function () {
+                $(this).toggleClass("hoov1");
+            }
+    );
+    $(function () {
+        $(document).tooltip();
+    });
+</script>
+
+</body>
+</html>
