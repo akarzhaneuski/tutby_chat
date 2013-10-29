@@ -1,0 +1,31 @@
+CREATE DATABASE IF NOT EXISTS tutby_chat;
+
+CREATE TABLE IF NOT EXISTS `tutby_chat`.`users` (
+  `id` INT(6) NOT NULL AUTO_INCREMENT ,
+  `login` VARCHAR(30) NOT NULL ,
+  `password` VARCHAR(45) NOT NULL ,
+  `status` INT(2) NOT NULL DEFAULT 0 ,
+  `avatar` INT(2) NOT NULL ,
+  `status_message` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
+  UNIQUE INDEX `login_UNIQUE` (`login` ASC) );
+
+CREATE TABLE IF NOT EXISTS `tutby_chat`.`status` (
+  `id` INT(2) NOT NULL AUTO_INCREMENT ,
+  `description` VARCHAR(20) NULL ,
+  PRIMARY KEY (`id`) );
+
+CREATE TABLE IF NOT EXISTS  `tutby_chat`.`friend` (
+  `giving` INT(6) NOT NULL ,
+  `accepting` INT(6) NOT NULL );
+
+CREATE  TABLE IF NOT EXISTS `tutby_chat`.`messeges` (
+  `id` INT(9) NOT NULL AUTO_INCREMENT ,
+  `id_sender` INT(6) NOT NULL ,
+  `id_target` INT(6) NOT NULL ,
+  `message` VARCHAR(1000) NULL ,
+  `time` DATETIME NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) );
+
