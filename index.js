@@ -41,7 +41,7 @@ app.post('/showUserDialog', function (req, res) {
         case 5: userName = 'Invoker';
             break;
     }
-    res.send({"userName": userName, "status" : 'online', 'image' : 'def_user'});
+    res.send({"userName": userName, "status" : 'online', "image": 'def_user'});
     res.end();
 });
 

@@ -29,3 +29,9 @@ CREATE  TABLE IF NOT EXISTS `tutby_chat`.`messeges` (
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) );
 
+ALTER TABLE `tutby_chat`.`messeges` CHANGE COLUMN `id_sender` `user` VARCHAR(30) NOT NULL  ,
+ CHANGE COLUMN `id_target` `id_conference` INT(9) NOT NULL  ;
+
+ CREATE  TABLE `tutby_chat`.`conference` (
+   `id` INT NOT NULL ,
+   `user_id` INT(9) NULL );
