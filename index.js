@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var chatModule = require('./chat_module');
 
+/// claster node js
+
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
