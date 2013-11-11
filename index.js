@@ -19,10 +19,28 @@ app.get('/', function (req, res) {
     res.render('index2');
 });
 
+/*function loadUser(req, res) {
 
+    var user = users[req.params.id];
+    if (user) {
+        req.user = user;
+    }
+}
+
+app.get('/user/:id', loadUser, function(req, res){
+    var d = Date.now();
+    res.send(d);
+    res.send('Viewing user ' + req.user.username);
+});
+
+*/
 app.get('/enter', function (req, res) {
     console.log(req.params);
     res.render('index');
+});
+app.get('/about', function (req, res) {
+    console.log('tezt');
+    res.render('about');
 });
 
 app.post('/showUserDialog', function (req, res) {

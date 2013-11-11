@@ -17,13 +17,27 @@
             display: inline-block;
             width: 5em;
         }
+
         html {
             height: 100%;
         }
+
         body {
             margin: 0;
             padding: 0;
             height: 100%;
+        }
+
+        .about {
+            text-shadow: 2px 1px 0 rgba(40, 252, 245, 1);
+            font-weight: normal;
+            color: #000000;
+            letter-spacing: 8pt;
+            word-spacing: 3pt;
+            font-size: 12px;
+            text-align: right;
+            font-family: comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
+            line-height: 0;
         }
     </style>
 </head>
@@ -120,7 +134,8 @@
         </div>
         <h3>ываываываываываав</h3>
     </div>
-
+    <!--<div id="about" ><a href="#about" style="text-decoration:none;">About us</a></div>-->
+    <div class="about">About us</div>
 </div>
 
 
@@ -152,6 +167,23 @@
                 $('#content').html(html);
             }
         });
+    });
+
+    $('.about').on('click', function () {
+        alert('asasd');
+//        $.ajax({
+//
+//            type: "GET",
+//            url: '/about',
+//            dataType: "json",
+//            success: function (ans) {
+//                var html = new EJS({url: ' /views/about.ejs'}).render(ans);
+//                $('#content').html(html);
+//            }
+//        });
+        var html = new EJS({url: ' /views/about.ejs'}).render();
+        alert(html);
+        $('#content').html(html);
     });
 
 </script>
