@@ -35,3 +35,12 @@ ALTER TABLE `tutby_chat`.`messeges` CHANGE COLUMN `id_sender` `user` VARCHAR(30)
  CREATE  TABLE `tutby_chat`.`conference` (
    `id` INT NOT NULL ,
    `user_id` INT(9) NULL );
+
+   ALTER TABLE `tutby_chat`.users DROP index id_UNIQUE;
+   ALTER TABLE friend ADD index (giving, accepting);
+--    messAges
+--    user ID
+--   delete unique id
+--   varchar 1000
+-- add index
+-- mysqldump

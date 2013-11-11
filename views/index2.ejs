@@ -17,9 +17,11 @@
             display: inline-block;
             width: 5em;
         }
+
         html {
             height: 100%;
         }
+
         body {
             margin: 0;
             padding: 0;
@@ -119,41 +121,58 @@
             <h1> Главная страница</h1>
         </div>
         <h3>ываываываываываав</h3>
+
+        <div id="test" style="width: 200px; height: 200px; background-color: #222222;"></div>
     </div>
 
 </div>
 
 
 <script>
-    $("#tabs").tabs();
-    $(".hoov").hover(
-            function () {
-                $(this).toggleClass("hoov1");
-            }, function () {
-                $(this).toggleClass("hoov1");
-            }
-    );
-    $(function () {
-        $(document).tooltip();
-    });
-
-    $('#tab1 div').on('click', function () {
-        var userId = $(this).find('span').text();
-        var data = {
-            "userId": userId
-        };
-        $.ajax({
-            type: "POST",
-            url: '/showUserDialog',
-            dataType: "json",
-            data: data,
-            success: function (ans) {
-                var html = new EJS({url: ' /views/userDialog.ejs'}).render(ans);
-                $('#content').html(html);
-            }
+    (function () {
+        $("#tabs").tabs();
+        $(".hoov").hover(
+                function () {
+                    $(this).toggleClass("hoov1");
+                }, function () {
+                    $(this).toggleClass("hoov1");
+                }
+        );
+        $(function () {
+            $(document).tooltip();
         });
-    });
 
+        $('#tab1 div').on('click', function () {
+            var userId = $(this).find('span').text();
+            var data = {
+                "userId": userId
+            };
+            $.ajax({
+                // get
+                type: "POST",
+                url: '/showUserDialog',
+                dataType: "json",
+                data: data,
+                success: function (ans) {
+                    var html = new EJS({url: ' /views/userDialog.ejs'}).render(ans);
+                    $('#content').html(html);
+                }
+            });
+        });
+
+        $('#test').on('click', function () {
+            var ws = new WebSocket("ws://localhost:1337/");
+            ws.onopen = function () {
+                alert("Connection opened...")
+            };
+            ws.onclose = function () {
+                alert("Connection closed...")
+            };
+            ws.onmessage = function (evt) {
+                alert("Have message...");
+            };
+        });
+    })();
 </script>
 
 </body>
