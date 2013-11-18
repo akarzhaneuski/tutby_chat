@@ -169,21 +169,29 @@
 
 
     $('.about').on('click', function () {
-   //     alert('asasd');
-//        $.ajax({
-//
-//            type: "GET",
-//            url: '/about',
-//            dataType: "json",
-//            success: function (ans) {
-//                var html = new EJS({url: ' /views/about.ejs'}).render(ans);
-//                $('#content').html(html);
-//            }
-//        });
         var html = new EJS({url: ' /views/about.ejs'}).render();
-      //  alert(html);
+         $('#content').html(html);
+    });
+
+    $('.hoov #add_contact').on('click', function () {
+        var userId = $(this).find('span').text();
+        var data = {
+            "userId": userId
+        };
+
+        $.ajax({
+            type: "GET",
+            url: '/add_contact',
+            dataType: "json",
+            success: function (ans) {
+                var html = new EJS({url: ' /views/add_contact.ejs'}).render(ans);
+                $('#content').html(html);
+            }
+        });
+        var html = new EJS({url: ' /views/add_contact.ejs'}).render();
         $('#content').html(html);
     });
+
 </script>
 
 </body>
