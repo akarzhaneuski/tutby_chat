@@ -2,7 +2,7 @@
 <html lang="us">
 <head>
     <meta charset="utf-8">
-    <title>RACH</title>
+    <title>SKUPE</title>
     <link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
     <script src="js/jquery-1.9.1.js"></script>
     <script src="js/jquery-ui-1.10.3.custom.js"></script>
@@ -21,33 +21,94 @@
             height: 100%;
         }
         body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
+            font-size:12px;
+            font-family:arial;
         }
-        .about {
-            text-shadow: 2px 1px 0 rgba(40, 252, 245, 1);
-            font-weight: normal;
-            color: #000000;
-            letter-spacing: 8pt;
-            word-spacing: 3pt;
-            font-size: 12px;
-            text-align: right;
-            font-family: comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
-            line-height: 0;
+
+        /* Cброс стилей списка браузера: */
+        .vert-nav, .vert-nav ul {
+            list-style:none;
+            margin:0 0 0 -1px; /* Чтобы в IE8 не косило. */
+            padding:0;
+        }
+
+        /* Делаем LI инлайновым: */
+        .vert-nav li {
+            float:left;
+            position:relative;
+            display:block;
+            margin:0 1px;
+            z-index:999;
+            width:150px;
+            background:#507EB9;
+
+        }
+
+        /* Меню: */
+        .vert-nav li a {
+            display:block;
+            padding:8px 5px 0 5px;
+            height:20px;
+            text-decoration:none;
+            text-align:center;
+            color:#fff;
+            font-weight:bold;
+        }
+
+        /* Выделенный пункт меню: */
+        .vert-nav li.current {
+            background:#C5D4EA;
+        }
+        /* Пункт меню при наведении курсора: */
+        .vert-nav li a:hover {
+            text-decoration:underline;
+        }
+
+        /* Подменю, скрываемое по умолчанию: */
+        .vert-nav ul {
+            position:absolute;
+            display:none;
+            left:0;
+        }
+        .vert-nav ul li {
+            border-top:1px solid #fff;
+            float:left;
         }
     </style>
 </head>
-<body>
 
+<body>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.vert-nav li').hover(
+                function() {
+                    $('ul', this).slideDown(110);
+                },
+                function() {
+                    $('ul', this).slideUp(110);
+                }
+        );
+
+    });
+</script>
 <div style="display:table;height: 100%;">
     <div style="display:table-cell;">
         <div id="user_panel" style="width: 300px; border: #a6c9e2 1px solid; margin-bottom: 10px; border-radius: 5px;">
             <div id="user_nickname"
                  style="border-bottom: #a6c9e2 1px solid; margin-bottom: 10px; height: 30px; padding-left: 10px; padding-top: 5px;"
                  class="hoov">
-                <span class="ui-icon ui-icon-circle-triangle-s" style="display: inline-block;"></span>
-                <span>Clasker</span>
+
+                <ul class="vert-nav">
+                    <li><a href="">Изменить статус</a>
+                        <ul>
+                            <li><a href="set_online">Онлайн</a></li>
+                            <li><a href="set_out">Нет на месте</a></li>
+                            <li><a href="set_busy">Занят</a></li>
+                            <li><a href="set_offline">Оффлайн</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
 
             <div style="padding-left: 10px; margin-bottom: 10px;">

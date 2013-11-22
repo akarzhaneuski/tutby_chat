@@ -43,7 +43,20 @@ app.get('/about', function (req, res) {
     console.log('tezt');
     res.render('about');
 });
-
+// САШИН КОД НАЧАЛСЯ
+app.get('/set_online', function (req, res) {
+    console.log('now im online');
+});
+app.get('/set_out', function (req, res) {
+    console.log('now im out');
+});
+app.get('/set_busy', function (req, res) {
+    console.log('now im busy');
+});
+app.get('/set_offline', function (req, res) {
+    console.log('now im offline');
+});
+//Сашин код закончился
 
 app.get('/azaza', function(req, res){
     var d= Date.now();
