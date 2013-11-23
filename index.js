@@ -1,5 +1,20 @@
 var express = require('express');
 var app = express();
+var mysql = require("mysql");
+var connection = mysql.createConnection({
+    user: "root",
+    password: "pokerface",
+    database: "tutby_chat"
+});
+connection.connect(function(err) {
+    if(err != null) {
+        console.log("Error connecting to mysql");
+    }
+    else{
+    console.log("Connected to mysql");
+    }
+    // connected! (unless `err` is set)
+});
 var chatModule = require('./chat_module');
 
 app.set('view engine', 'ejs');
@@ -45,15 +60,55 @@ app.get('/about', function (req, res) {
 });
 // САШИН КОД НАЧАЛСЯ
 app.get('/set_online', function (req, res) {
+    connection.query("update users set status=1 where id=1 ;", function(err, rows){
+        // There was a error or not?
+        if(err != null) {
+            res.end("Query error:" + err);
+            connection.end();
+        } else {
+            // Shows the result on console window
+            console.log("Status changed on online");
+        }
+    });
     console.log('now im online');
 });
 app.get('/set_out', function (req, res) {
+    connection.query("update users set status=2 where id=1 ;", function(err, rows){
+        // There was a error or not?
+        if(err != null) {
+            res.end("Query error:" + err);
+            connection.end();
+        } else {
+            // Shows the result on console window
+            console.log("Status changed on away");
+        }
+    });
     console.log('now im out');
 });
 app.get('/set_busy', function (req, res) {
+    connection.query("update users set status=3 where id=1 ;", function(err, rows){
+        // There was a error or not?
+        if(err != null) {
+            res.end("Query error:" + err);
+            connection.end();
+        } else {
+            // Shows the result on console window
+            console.log("Status changed on busy");
+        }
+    });
     console.log('now im busy');
 });
 app.get('/set_offline', function (req, res) {
+    connection.query("update users set status=4 where id=1 ;", function(err, rows){
+        // There was a error or not?
+        if(err != null) {
+            res.end("Query error:" + err);
+            connection.end();
+        } else {
+            // Shows the result on console window
+            console.log("Status changed on offline");
+        }
+    });
     console.log('now im offline');
 });
 //Сашин код закончился
@@ -61,6 +116,7 @@ app.get('/set_offline', function (req, res) {
 app.get('/azaza', function(req, res){
     var d= Date.now();
     console.log(d);
+    connection.end();
     res.send(d.toString());
 });
 
@@ -129,4 +185,4 @@ app.get('/sendMessage', function (req, res) {
     res.end();
 });
 
-app.listen(8080);
+app.listen(8083);
