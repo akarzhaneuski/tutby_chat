@@ -9,12 +9,19 @@
     <script src="js/ejs.js"></script>
 
     <style>
-        a { cursor: url(../img/cur116.cur), auto;}
-        .hoov1 {
-            background-color: #eaf5f7;
-            cursor: url(../img/cur116.cur), auto;
-        }
 
+        .turn:hover {
+
+            -moz-transform: translate(60em,0);
+            -ms-transform: translate(60em,0);
+            -webkit-transform: translate(60em,0);
+            -o-transform: translate(60em,0);
+            transform: translate(60em,0);
+            -webkit-transition: all 6s ease-in-out;
+            -moz-transition: all 6s ease-in-out;
+            -o-transition: all 6s ease-in-out;
+            -ms-transition: all 6s ease-in-out;
+        }
         label {
             display: inline-block;
             width: 5em;
@@ -23,7 +30,7 @@
             height: 100%;
         }
         body {
-            cursor: url(../img/cur116.cur), auto;
+
             margin: 0;
             padding: 0;
             height: 100%;
@@ -40,12 +47,13 @@
             line-height: 0;
         }
 
+
     </style>
 </head>
 <body>
 
 <div style="display:table;height: 100%;">
-    <div style="display:table-cell;">
+    <div style="display:table-cell;" >
         <div id="user_panel" style="width: 300px; border: #a6c9e2 1px solid; margin-bottom: 10px; border-radius: 5px;">
             <div id="user_nickname"
                  style="border-bottom: #a6c9e2 1px solid; margin-bottom: 10px; height: 30px; padding-left: 10px; padding-top: 5px;"
@@ -134,14 +142,18 @@
             <h1> Главная страница</h1>
         </div>
         <h3>ываываываываываав</h3>
+        Кликни по Мишке, что бы заставить его кодить
+
     </div>
     <!--<div id="about" ><a href="#about" style="text-decoration:none;">About us</a></div>-->
-    <div class="about">About us</div>
 
+        <div class="about">About us</div>
+    <p><img style="" class="turn"  src="../img/michail.jpg"  /></p>
 </div>
 
 
 <script>
+
     $("#tabs").tabs();
     $(".hoov").hover(
             function () {

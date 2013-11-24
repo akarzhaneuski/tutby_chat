@@ -5,6 +5,7 @@
     <link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
     <title>About us</title>
     <style>
+
         .letter {
             color: red;
             font-size: 155%;
@@ -45,7 +46,16 @@
     <p><input type="button" value="Send it to us">
         <input type="reset" value="Clear form"></p>
 
-
+    <div id="hide-layout"> SPECIAL KTS AREA (КЛИКАБЕЛЬНО) </div>
 </div>
+
 </body>
+<script>
+$(function() {
+
+$('#hide-layout').click(function() {
+$('#hide-layout, #popup').fadeOut(555);
+})
+
+})</script>
 </html>
