@@ -9,19 +9,10 @@
     <script src="js/ejs.js"></script>
 
     <style>
-
-        .turn:hover {
-
-            -moz-transform: translate(60em,0);
-            -ms-transform: translate(60em,0);
-            -webkit-transform: translate(60em,0);
-            -o-transform: translate(60em,0);
-            transform: translate(60em,0);
-            -webkit-transition: all 6s ease-in-out;
-            -moz-transition: all 6s ease-in-out;
-            -o-transition: all 6s ease-in-out;
-            -ms-transition: all 6s ease-in-out;
+        .hoov1 {
+            background-color: #eaf5f7;
         }
+
         label {
             display: inline-block;
             width: 5em;
@@ -30,7 +21,6 @@
             height: 100%;
         }
         body {
-
             margin: 0;
             padding: 0;
             height: 100%;
@@ -46,14 +36,12 @@
             font-family: comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
             line-height: 0;
         }
-
-
     </style>
 </head>
 <body>
 
 <div style="display:table;height: 100%;">
-    <div style="display:table-cell;" >
+    <div style="display:table-cell;">
         <div id="user_panel" style="width: 300px; border: #a6c9e2 1px solid; margin-bottom: 10px; border-radius: 5px;">
             <div id="user_nickname"
                  style="border-bottom: #a6c9e2 1px solid; margin-bottom: 10px; height: 30px; padding-left: 10px; padding-top: 5px;"
@@ -63,21 +51,21 @@
             </div>
 
             <div style="padding-left: 10px; margin-bottom: 10px;">
-                <div style="width: 40px; height: 40px; padding-top: 10px; padding-left: 10px; display: inline-block;"
+                <div style="width: 40px; height: 40px; padding-top: 5px; padding-left: 5px; display: inline-block;"
                      class="hoov">
                     <label for="show_news"/>
                     <img class="hoov" id="show_news" src="img/add.jpg" width="30" height="30"
                          alt="Добавить контакт" title="Просмотр новостей"/>
                 </div>
 
-                <div style="width: 40px; height: 40px; padding-top: 10px; padding-left: 10px; display: inline-block;"
+                <div style="width: 40px; height: 40px; padding-top: 5px; padding-left: 5px; display: inline-block;"
                      class="hoov">
                     <label for="add_contact"/>
                     <img class="hoov" id="add_contact" src="img/add.jpg" width="30" height="30"
                          alt="Добавить контакт" title="Добавить контакт"/>
                 </div>
 
-                <div style="width: 40px; height: 40px; padding-top: 10px; padding-left: 10px; display: inline-block;"
+                <div style="width: 40px; height: 40px; padding-top: 5px; padding-left: 5px; display: inline-block;"
                      class="hoov">
                     <label for="create_chat"/>
                     <img class="hoov" id="create_chat" src="img/add.jpg" width="30" height="30"
@@ -142,18 +130,14 @@
             <h1> Главная страница</h1>
         </div>
         <h3>ываываываываываав</h3>
-        Кликни по Мишке, что бы заставить его кодить
-
     </div>
     <!--<div id="about" ><a href="#about" style="text-decoration:none;">About us</a></div>-->
+    <div class="about">About us</div>
 
-        <div class="about">About us</div>
-    <p><img style="" class="turn"  src="../img/michail.jpg"  /></p>
 </div>
 
 
 <script>
-
     $("#tabs").tabs();
     $(".hoov").hover(
             function () {
@@ -185,29 +169,21 @@
 
 
     $('.about').on('click', function () {
+   //     alert('asasd');
+//        $.ajax({
+//
+//            type: "GET",
+//            url: '/about',
+//            dataType: "json",
+//            success: function (ans) {
+//                var html = new EJS({url: ' /views/about.ejs'}).render(ans);
+//                $('#content').html(html);
+//            }
+//        });
         var html = new EJS({url: ' /views/about.ejs'}).render();
-         $('#content').html(html);
-    });
-
-    $('.hoov #add_contact').on('click', function () {
-        var userId = $(this).find('span').text();
-        var data = {
-            "userId": userId
-        };
-
-        $.ajax({
-            type: "GET",
-            url: '/add_contact',
-            dataType: "json",
-            success: function (ans) {
-                var html = new EJS({url: ' /views/add_contact.ejs'}).render(ans);
-                $('#content').html(html);
-            }
-        });
-        var html = new EJS({url: ' /views/add_contact.ejs'}).render();
+      //  alert(html);
         $('#content').html(html);
     });
-
 </script>
 
 </body>
