@@ -5,6 +5,7 @@
     <link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
     <title>About us</title>
     <style>
+
         .letter {
             color: red;
             font-size: 155%;
@@ -24,7 +25,6 @@
             font-size:15px;
             text-align:left;
             font-family:comic sans, comic sans ms, cursive, verdana, arial, sans-serif;line-height:1;
-
         }
 
     </style>
@@ -43,10 +43,19 @@
     </p>
     <p>We are thankful for using our program! You may contact us by form below.</p></span>
     <textarea name="commentBack" cols="40" rows="3"></textarea></p>
-    <p><input type="submit" value="Send it to us">
+    <p><input type="button" value="Send it to us">
         <input type="reset" value="Clear form"></p>
 
-
+    <div id="hide-layout"> SPECIAL KTS AREA (КЛИКАБЕЛЬНО) </div>
 </div>
+
 </body>
+<script>
+$(function() {
+
+$('#hide-layout').click(function() {
+$('#hide-layout, #popup').fadeOut(555);
+})
+
+})</script>
 </html>

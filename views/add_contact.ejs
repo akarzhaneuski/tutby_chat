@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="us">
+<style>
+    #parent_popup {
+        background: #000;
+        height: 100%;
+        opacity: 0.9;
+        position: fixed;
+        width: 100%;
+        z-index: 100;
+        top: 0;
+        left: 0;
+    }
+    #popup {
+        background-color: #ffffff;
+        height: 200px;
+        position: fixed;
+        top: 100px;
+        left: 40%;
+        color: #000;
+        width: 300px;
+        text-align: center;
+    }
+</style>
+<head>
+    <meta charset="utf-8">
+    <link href="css/start/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+    <title>Add contact</title>
+</head>
+<body>
+<div id="parent_popup">
+    <div id="popup">
+        <p>Enter the name below:</p>
+        <textarea name="Add_contact_textarea" cols="20" rows="1"></textarea>
+        <p><input type="button" value="Add friend"></p>
+        <p style="cursor: pointer;" onclick="document.getElementById('parent_popup').style.display='none';">Закрыть</p>
+    </div>
+</div>
+<div>
+
+</div>
+</body>
+</html>

@@ -38,6 +38,15 @@ ALTER TABLE `tutby_chat`.`messeges` CHANGE COLUMN `id_sender` `user` VARCHAR(30)
 
    ALTER TABLE `tutby_chat`.users DROP index id_UNIQUE;
    ALTER TABLE `tutby_chat`.friend ADD index (giving, accepting);
+
+   insert into `tutby_chat`.users
+   value
+   (1,'Adminius','12345',0,0,'offline')
+   ;
+   insert into status
+   values
+   (1,'online'),(2,'away'),(3,'busy'),(4,'offline')
+   ;
 --    messAges
 --    user ID
 --   delete unique id
