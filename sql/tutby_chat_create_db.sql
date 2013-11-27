@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS `tutby_chat`.`users` (
   `login` VARCHAR(30) NOT NULL ,
   `password` VARCHAR(45) NOT NULL ,
   `status` INT(2) NOT NULL DEFAULT 0 ,
-  `avatar` INT(2) NOT NULL ,
+  `avatar` INT(2) NOT NULL DEFAULT 0 ,
   `status_message` VARCHAR(45) NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) ,
@@ -37,7 +37,7 @@ ALTER TABLE `tutby_chat`.`messeges` CHANGE COLUMN `id_sender` `user` VARCHAR(30)
    `user_id` INT(9) NULL );
 
    ALTER TABLE `tutby_chat`.users DROP index id_UNIQUE;
-   ALTER TABLE friend ADD index (giving, accepting);
+   ALTER TABLE `tutby_chat`.friend ADD index (giving, accepting);
 --    messAges
 --    user ID
 --   delete unique id

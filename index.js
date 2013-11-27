@@ -1,4 +1,5 @@
 var express = require('express');
+var mysql      = require('mysql');
 var app = express();
 var chatModule = require('./chat_module');
 
@@ -12,33 +13,80 @@ app.use('/views', express.static(__dirname + '/views'));
 
 app.use(express.json());
 app.use(express.urlencoded());
-
-
+app.use(express.cookieParser('keyboard cat'));
+app.use(express.session());
 app.use(app.router);
 
-app.get('/', function (req, res) {
-    res.render('index2');
+var connection = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    password : 'hello'
 });
 
-/*function loadUser(req, res) {
-
-    var user = users[req.params.id];
-    if (user) {
-        req.user = user;
+function checkAuth(req, res, next) {
+    if (req.session.user_id) {
+        next();
+    } else {
+        res.redirect('/login');
     }
 }
+app.get('/main',checkAuth, function (req, res) {
+    res.render('main');
+});
+app.get('/login', function (req, res) {
+    res.render('login');
+});
+app.get('/',checkAuth, function (req, res) {
+    res.redirect('/main');
+});
+app.post('/login', function (req, res) {
+    var user = req.body.user;
+    var password =req.body.password;
+    var sql = "SELECT id FROM tutby_chat.users WHERE login = "+connection.escape(user)+
+        " AND password = "+connection.escape(password);
 
-app.get('/user/:id', loadUser, function(req, res){
-    var d = Date.now();
-    res.send(d);
-    res.send('Viewing user ' + req.user.username);
+    var query=connection.query(sql, function(err, results) {
+        var resvalue;
+        if(results[0] == undefined){
+            resvalue=0;
+        }else{
+            resvalue=results[0].id;
+        }
+        if (resvalue>0 ) {
+            console.log('login yes');
+            req.session.user_id = resvalue;
+            res.redirect('/main');
+        } else {
+            console.log('login no');
+            res.redirect('/login');
+        }
+    });
+});
+app.post('/registration',function(req, res){
+    var user = req.body.user;
+    var password =req.body.password;
+
+    var sql = "SELECT login FROM tutby_chat.users WHERE login ="+connection.escape(user);
+    console.log('reg 1');
+    connection.query(sql, function(err, results) {
+        var exists = (results.length!=0);
+        var message;
+        if(exists){
+            console.log('reg no');
+            message = "User already exists!";
+        } else {
+            var sql = "INSERT INTO tutby_chat.users(login,password)  VALUES( " + connection.escape(user) +
+                ", "+ connection.escape(password)+")";
+            connection.query(sql, function(err, results) {
+                console.log("ok insert");
+            });
+            console.log('reg yes');
+        }
+        res.redirect('/login');
+    });
+
 });
 
-*/
-app.get('/enter', function (req, res) {
-    console.log(req.params);
-    res.render('index');
-});
 app.get('/about', function (req, res) {
     console.log('tezt');
     res.render('about');
