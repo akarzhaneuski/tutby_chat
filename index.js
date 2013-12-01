@@ -1,10 +1,12 @@
 var express = require('express');
-var mysql      = require('mysql');
+var mysql = require('mysql');
+var crypto = require('crypto');
+var chatModule = require('./chat_module');
 var app = express();
-var mysql = require("mysql");
+
 var connection = mysql.createConnection({
     user: "root",
-    password: "pokerface",
+    password: "hello",
     database: "tutby_chat"
 });
 connection.connect(function(err) {
@@ -16,7 +18,6 @@ connection.connect(function(err) {
     }
     // connected! (unless `err` is set)
 });
-var chatModule = require('./chat_module');
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -32,12 +33,6 @@ app.use(express.cookieParser('keyboard cat'));
 app.use(express.session());
 app.use(app.router);
 
-var connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'root',
-    password : 'hello'
-});
-
 function checkAuth(req, res, next) {
     if (req.session.user_id) {
         next();
@@ -45,61 +40,62 @@ function checkAuth(req, res, next) {
         res.redirect('/login');
     }
 }
+app.get('/', function (req, res) {
+    res.redirect('/main');
+});
 app.get('/main',checkAuth, function (req, res) {
     res.render('main');
 });
 app.get('/login', function (req, res) {
     res.render('login');
 });
-app.get('/',checkAuth, function (req, res) {
-    res.redirect('/main');
+app.get('/registration',function (req, res) {
+    res.render('registration');
 });
 app.post('/login', function (req, res) {
     var user = req.body.user;
     var password =req.body.password;
-    var sql = "SELECT id FROM tutby_chat.users WHERE login = "+connection.escape(user)+
-        " AND password = "+connection.escape(password);
-
-    var query=connection.query(sql, function(err, results) {
-        var resvalue;
-        if(results[0] == undefined){
-            resvalue=0;
-        }else{
-            resvalue=results[0].id;
-        }
-        if (resvalue>0 ) {
-            console.log('login yes');
-            req.session.user_id = resvalue;
-            res.redirect('/main');
-        } else {
-            console.log('login no');
+    var hash_password=crypto.createHash('sha1').update(password).digest('hex');;
+    var sql = "SELECT password,id FROM users WHERE login = ?";
+    connection.query(sql,[user], function(err, results) {
+        if( results[0] == undefined ){
+            console.log("Login failure for %s!",user);
             res.redirect('/login');
+        }else{
+            if(results[0].password == hash_password)
+            {
+                req.session.user_id=results[0].id;
+                console.log("Login success for %s!",user);
+                res.redirect('/main');
+            }else{
+                console.log("Login failure for %s!",user);
+                res.redirect('/login');
+            }
         }
     });
 });
 app.post('/registration',function(req, res){
     var user = req.body.user;
     var password =req.body.password;
-
-    var sql = "SELECT login FROM tutby_chat.users WHERE login ="+connection.escape(user);
-    console.log('reg 1');
-    connection.query(sql, function(err, results) {
-        var exists = (results.length!=0);
-        var message;
-        if(exists){
-            console.log('reg no');
-            message = "User already exists!";
-        } else {
-            var sql = "INSERT INTO tutby_chat.users(login,password)  VALUES( " + connection.escape(user) +
-                ", "+ connection.escape(password)+")";
-            connection.query(sql, function(err, results) {
-                console.log("ok insert");
+    var hash_password=crypto.createHash('sha1').update(password).digest('hex');
+    var sql = "SELECT login FROM users WHERE login = ? ";
+    connection.query(sql,[user],function(err, results) {
+        if(results[0] == undefined){
+            var sql = "INSERT INTO users(login,password)  VALUES( ?,? )";
+            connection.query(sql,[user,hash_password],function(err, results){
             });
-            console.log('reg yes');
+            console.log('Registration success for %s!',user);
+            res.redirect('/login');
+        }else{
+            console.log('Registration failure for %s!',user);
+            res.redirect('/registration');
         }
-        res.redirect('/login');
     });
 
+});
+app.get('/logout',function (req,res){
+    req.session.user_id=undefined;
+    res.redirect('/login');
 });
 
 app.get('/about', function (req, res) {
@@ -233,4 +229,4 @@ app.get('/sendMessage', function (req, res) {
     res.end();
 });
 
-app.listen(8080);
+app.listen(8083);

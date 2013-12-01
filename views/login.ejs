@@ -1,48 +1,19 @@
 <!doctype html>
 <html>
-<script src="js/jquery-1.9.1.js"></script>
-<script src="js/jquery-ui-1.10.3.custom.js"></script>
-<script src="js/ejs.js"></script>
-<script>
-    function login() {
-        var password=$("#password").val();
-        var user=$("#user").val();
-
-        $.ajax({
-            url: '/login',
-            data: { password: password,user: user },
-            type: 'post'
-        });
-    }
-    function registration() {
-        var password=$("#password").val();
-        var user=$("#user").val();
-
-        $.ajax({
-            url: '/registration',
-            data: { password: password,user: user },
-            type: 'post'
-        });
-    }
-    $( document ).ready(function() {
-        //$('#answer').text(res.)
-    });
-</script>
-<head>
-    <title>LoginForm</title>
-</head>
-<body>
-<div style="width: 500px; height: 300px; border: #a6c9e2 1px solid; border-radius: 5px;
-padding-left: 250px; padding-top: 50px; margin: auto; margin-top: 100px;"><form method="post">
-    <span> Логин </span>
-    <input name="user" id="user" placeholder="user" style="display:  block;" class="ui-button">
-    <span> Пароль </span>
-    <input name="password" id="password" type="password" placeholder="password" style="display:  block;" class="ui-button">
-
-    <input type="submit" remonclick="login()" value="Log in">
-    <input type="button" onclick="registration()" value="Registration">
-    <div id =answer><%%></div>
-    <a href="/main">Main</a>
-</form></div>
-</body>
+    <head>
+        <title>Вход</title>
+    </head>
+    <body>
+    <div style="width: 500px; height: 300px; border: #a6c9e2 1px solid; border-radius: 5px;
+padding-left: 250px; padding-top: 50px; margin: auto; margin-top: 100px;">
+        <form method="post">
+            <span> Логин </span>
+            <input name="user" id="user" placeholder="user" style="display:  block;" class="ui-button">
+            <span> Пароль </span>
+            <input name="password" id="password" type="password" placeholder="password" style="display:  block;" class="ui-button">
+            <input type="submit" remonclick="login()" value="Войти">
+        </form>
+        <a href="/registration">Registration</a>
+        </div>
+    </body>
 </html>
