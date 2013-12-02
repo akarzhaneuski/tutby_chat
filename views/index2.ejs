@@ -17,14 +17,17 @@
             display: inline-block;
             width: 5em;
         }
+
         html {
             height: 100%;
         }
+
         body {
             margin: 0;
             padding: 0;
             height: 100%;
         }
+
         .about {
             text-shadow: 2px 1px 0 rgba(40, 252, 245, 1);
             font-weight: normal;
@@ -93,7 +96,7 @@
                         Meepo
                     </div>
 
-                    <div style="width: 280px; height: 50px; padding-top: 2px; padding-left: 10px;" class="hoov">
+                    <div style="width: 280px; height: 50px; padding-top: 2px; padding-left: 10px; " class="hoov">
                         <img width="40px" height="40px" src="img/def_user.jpg" style="vertical-align: middle;"/>
                         <img width="20px" height="20px" src="img/away.png"/>
                         <span style="display: none;">2</span>
@@ -130,60 +133,100 @@
             <h1> Главная страница</h1>
         </div>
         <h3>ываываываываываав</h3>
+
+        <div id="test" style="width: 200px; height: 200px; background-color: #222222;"></div>
     </div>
     <!--<div id="about" ><a href="#about" style="text-decoration:none;">About us</a></div>-->
     <div class="about">About us</div>
-
 </div>
 
 
 <script>
-    $("#tabs").tabs();
-    $(".hoov").hover(
-            function () {
-                $(this).toggleClass("hoov1");
-            }, function () {
-                $(this).toggleClass("hoov1");
-            }
-    );
-    $(function () {
-        $(document).tooltip();
-    });
-
-    $('#tab1 div').on('click', function () {
-        var userId = $(this).find('span').text();
-        var data = {
-            "userId": userId
+    (function () {
+        var ws = new WebSocket("ws://localhost:1337/");
+        var currentChanel = -1;
+        var message =  null;
+        ws.onopen = function () {
+//            alert("Connection opened...")
         };
-        $.ajax({
-            type: "POST",
-            url: '/showUserDialog',
-            dataType: "json",
-            data: data,
-            success: function (ans) {
-                var html = new EJS({url: ' /views/userDialog.ejs'}).render(ans);
-                $('#content').html(html);
+        ws.onclose = function () {
+//            alert("Connection closed...")
+        };
+        ws.onmessage = function (evt) {
+//            alert("Have message..." + evt);
+//            console.log(evt);
+            var data = JSON.parse(evt.data);
+            console.log(data);
+//            console.log(data);
+            switch (data.type) {
+                case 'showMessages':
+                    for (var i = 0; i < data.data.length; ++i) {
+                        console.log(data.data[i]);
+                        message.html(message.html() + '<p><strong>' + data.data[i].user +
+                                "</strong>: " + data.data[i].message + '</p>');
+                    }
+                    break;
+                case 'newChanelMessage':
+//                        alert(currentChanel);
+//                    console.log(currentChanel);
+//                    console.log(data);
+                    if (currentChanel == parseInt(data.chanel)) {
+                        message.html(message.html() + '<p><strong>' + data.user +
+                                "</strong>: " + data.message + '</p>');
+                    }
+                    break;
+
             }
+        };
+        $("#tabs").tabs();
+        $(".hoov").hover(
+                function () {
+                    $(this).toggleClass("hoov1");
+                }, function () {
+                    $(this).toggleClass("hoov1");
+                }
+        );
+        $(function () {
+            $(document).tooltip();
         });
-    });
+
+        $('#tab1 div').on('click', function () {
+            var userId = currentChanel = $(this).find('span').text();
+            var data = {
+                "type": "listen",
+                "userId": userId
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/showUserDialog',
+                dataType: "json",
+                data: data,
+                success: function (ans) {
+                    var html = new EJS({url: ' /views/userDialog.ejs'}).render(ans);
+                    $('#content').html(html);
+                    message = $('#messages');
+
+                    $("#send").on('click', function () {
+                        var message = $('#mess').val();
+                        ws.send(JSON.stringify({
+                            "type": "sendMessage",
+                            "message": message,
+                            "chanel": userId
+                        }));
+                    });
+
+                    ws.send(JSON.stringify(data));
+                }
+            });
+        });
 
 
-    $('.about').on('click', function () {
-   //     alert('asasd');
-//        $.ajax({
-//
-//            type: "GET",
-//            url: '/about',
-//            dataType: "json",
-//            success: function (ans) {
-//                var html = new EJS({url: ' /views/about.ejs'}).render(ans);
-//                $('#content').html(html);
-//            }
-//        });
-        var html = new EJS({url: ' /views/about.ejs'}).render();
-      //  alert(html);
-        $('#content').html(html);
-    });
+        $('.about').on('click', function () {
+            var html = new EJS({url: ' /views/about.ejs'}).render();
+            $('#content').html(html);
+        });
+    })();
 </script>
 
 </body>
