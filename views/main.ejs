@@ -17,14 +17,17 @@
             display: inline-block;
             width: 5em;
         }
+
         html {
             height: 100%;
         }
+
         body {
             margin: 0;
             padding: 0;
             height: 100%;
         }
+
         .about {
             text-shadow: 2px 1px 0 rgba(40, 252, 245, 1);
             font-weight: normal;
@@ -36,13 +39,14 @@
             font-family: comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
             line-height: 0;
         }
+
         .turn:hover {
 
-            -moz-transform: translate(60em,0);
-            -ms-transform: translate(60em,0);
-            -webkit-transform: translate(60em,0);
-            -o-transform: translate(60em,0);
-            transform: translate(60em,0);
+            -moz-transform: translate(60em, 0);
+            -ms-transform: translate(60em, 0);
+            -webkit-transform: translate(60em, 0);
+            -o-transform: translate(60em, 0);
+            transform: translate(60em, 0);
             -webkit-transition: all 6s ease-in-out;
             -moz-transition: all 6s ease-in-out;
             -o-transition: all 6s ease-in-out;
@@ -59,7 +63,7 @@
                  style="border-bottom: #a6c9e2 1px solid; margin-bottom: 10px; height: 30px; padding-left: 10px; padding-top: 5px;"
                  class="hoov">
                 <span class="ui-icon ui-icon-circle-triangle-s" style="display: inline-block;"></span>
-                <span>Clasker RACH</span>
+                <span>Clasker</span>
             </div>
 
             <div style="padding-left: 10px; margin-bottom: 10px;">
@@ -90,6 +94,7 @@
             </div>
 
         </div>
+
         <div id="left_panel" style="width: 300px; height: 100%;">
             <div id="tabs">
                 <ul>
@@ -103,6 +108,7 @@
                         <span style="display: none;">1</span>
                         Meepo
                     </div>
+
                     <div style="width: 280px; height: 50px; padding-top: 2px; padding-left: 10px;" class="hoov">
                         <img width="40px" height="40px" src="img/def_user.jpg" style="vertical-align: middle;"/>
                         <img width="20px" height="20px" src="img/away.png"/>
@@ -132,67 +138,157 @@
             </div>
         </div>
     </div>
+
+
     <div id="content" style="display:table-cell; width: 100%; height: 100%; padding-left: 10px;">
 
         <div style="border-bottom: #a6c9e2 1px solid; width: 100%;">
             <h1> Главная страница</h1>
         </div>
         <h3>Загаловок уровня 3</h3>
-        Кликни по Мишке, что бы заставить его кодить, иначе Мишка найдёт Твой адрес, придёт к тебе домой и заставит кодить Тебя!
+        Кликни по Мишке, что бы заставить его кодить, иначе Мишка найдёт Твой адрес, придёт к тебе домой и заставит
+        кодить Тебя!
     </div>
+    <!--<div id="about" ><a href="#about" style="text-decoration:none;">About us</a></div>-->
     <div class="about">About us</div>
     <a href="/logout">Выход</a>
-    <p><img style="" class="turn"  src="../img/michail.jpg"  /></p>
+
+    <p><img style="" class="turn" src="../img/michail.jpg"/></p>
 </div>
 
-<script>
-    $('.hoov #add_contact').on('click', function () {
-        var userId = $(this).find('span').text();
-        var data = {
-            "userId": userId
-        };
 
-        $.ajax({
-            type: "GET",
-            url: '/add_contact',
-            dataType: "json",
-            success: function (ans) {
-                var html = new EJS({url: ' /views/add_contact.ejs'}).render(ans);
-                $('#content').html(html);
-            }
-        });
-        var html = new EJS({url: ' /views/add_contact.ejs'}).render();
-        $('#content').html(html);
-    });
-    $("#tabs").tabs();
-    $(".hoov").hover(function () {
-                $(this).toggleClass("hoov1");
-            }, function () {
-                $(this).toggleClass("hoov1");
-            });
-    $(function () {
-        $(document).tooltip();
-    });
-    $('#tab1 div').on('click', function () {
-        var userId = $(this).find('span').text();
-        var data = {
-            "userId": userId
+<script>
+    (function () {
+        var ws = new WebSocket("ws://localhost:1337/");
+        var currentChanel = -1;
+        var message = null;
+        ws.onopen = function () {
+//            alert("Connection opened...")
+        }
+        ws.onclose = function () {
+//            alert("Connection closed...")
         };
-        $.ajax({
-            type: "POST",
-            url: '/showUserDialog',
-            dataType: "json",
-            data: data,
-            success: function (ans) {
-                var html = new EJS({url: ' /views/userDialog.ejs'}).render(ans);
-                $('#content').html(html);
+        ws.onmessage = function (evt) {
+            var data = JSON.parse(evt.data);
+            console.log(data);
+            switch (data.type) {
+                case 'showMessages':
+                    for (var i = 0; i < data.data.length; ++i) {
+                        console.log(data.data[i]);
+                        message.html(message.html() + '<p><strong>' + data.data[i].user +
+                                "</strong>: " + data.data[i].message + '</p>');
+                    }
+                    break;
+                case 'newChanelMessage':
+                    if (currentChanel == parseInt(data.chanel)) {
+                        message.html(message.html() + '<p><strong>' + data.user +
+                                "</strong>: " + data.message + '</p>');
+                    }
+                    break;
+
             }
+        };
+        $('.hoov #add_contact').on('click', function () {
+            var userId = $(this).find('span').text();
+            var data = {
+                "userId": userId
+            };
+
+            $.ajax({
+                type: "GET",
+                url: '/add_contact',
+                dataType: "json",
+                success: function (ans) {
+                    var html = new EJS({url: ' /views/add_contact.ejs'}).render(ans);
+                    $('#content').html(html);
+                }
+            });
+            var html = new EJS({url: ' /views/add_contact.ejs'}).render();
+            $('#content').html(html);
         });
-    });
-    $('.about').on('click', function () {
-        var html = new EJS({url: ' /views/about.ejs'}).render();
-        $('#content').html(html);
-    });
+        $("#tabs").tabs();
+        $(".hoov").hover(
+                function () {
+                    $(this).toggleClass("hoov1");
+                }, function () {
+                    $(this).toggleClass("hoov1");
+                }
+        );
+        $(function () {
+            $(document).tooltip();
+        });
+
+//        $('#tab1 div').on('click', function () {
+//            var userId = currentChanel = $(this).find('span').text();
+//            var data = {
+//                "type": "listen",
+//                "userId": userId
+//            };
+//
+//            $.ajax({
+//                type: "POST",
+//                url: '/showUserDialog',
+//                dataType: "json",
+//                data: data,
+//                success: function (ans) {
+//                    var html = new EJS({url: ' /views/userDialog.ejs'}).render(ans);
+//                    $('#content').html(html);
+//                    message = $('#messages');
+//
+//                    $("#send").on('click', function () {
+//                        var message = $('#mess').val();
+//                        ws.send(JSON.stringify({
+//                            "type": "sendMessage",
+//                            "message": message,
+//                            "chanel": userId
+//                        }));
+//                    });
+//
+//                    ws.send(JSON.stringify(data));
+//                }
+//            });
+//        });
+        $(function () {
+            $(document).tooltip();
+        });
+
+        $('#tab1').find('div').on('click', function () {
+            var userId = currentChanel = $(this).find('span').text();
+            var data = {
+                "type": "listen",
+                "userId": userId
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/showUserDialog',
+                dataType: "json",
+                data: data,
+                success: function (ans) {
+                    var html = new EJS({url: ' /views/userDialog.ejs'}).render(ans);
+                    $('#content').html(html);
+                    message = $('#messages');
+
+                    $("#send").on('click', function () {
+                        var message = $('#mess').val();
+                        ws.send(JSON.stringify({
+                            "type": "sendMessage",
+                            "message": message,
+                            "chanel": userId
+                        }));
+                    });
+
+                    ws.send(JSON.stringify(data));
+                }
+            });
+        });
+
+
+        $('.about').on('click', function () {
+            var html = new EJS({url: ' /views/about.ejs'}).render();
+            $('#content').html(html);
+        });
+    })();
 </script>
 
 </body>
