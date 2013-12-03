@@ -22,11 +22,12 @@ exports.addNewListener = function (chanel, user, connection) {
     }
 }
 
-exports.getAllUsersByChanel = function (chanel){
+exports.getAllUsersByChanel = function (chanel) {
     var ret = [];
     var length = users.length;
-    for(var i = 0; i < length; ++i){
-        if(users[i].chanel == chanel){}
+    for (var i = 0; i < length; ++i) {
+        if (users[i].chanel == chanel) {
+        }
         ret.push(users[i].connection);
     }
     return ret;

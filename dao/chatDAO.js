@@ -7,7 +7,7 @@ chatMessages.push({
 });
 
 exports.addMessage = function (mess, chanel, user) {
-    console.log("chatDAO: add message to storage" );
+    console.log("chatDAO: add message to storage");
     chatMessages.push({
         user: user,
         message: mess,
@@ -20,12 +20,12 @@ exports.getLength = function () {
     return chatMessages.length;
 }
 
-exports.getMessagesByChanel = function (chanel){
+exports.getMessagesByChanel = function (chanel) {
     console.log("chatDAO: get messages by chanel");
     var ret = [];
     var length = chatMessages.length;
-    for(var i = 0; i < length; ++i){
-        if(chatMessages[i].chanel == chanel){
+    for (var i = 0; i < length; ++i) {
+        if (chatMessages[i].chanel == chanel) {
             ret.push(chatMessages[i]);
         }
     }
