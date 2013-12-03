@@ -17,17 +17,14 @@
             display: inline-block;
             width: 5em;
         }
-
         html {
             height: 100%;
         }
-
         body {
             margin: 0;
             padding: 0;
             height: 100%;
         }
-
         .about {
             text-shadow: 2px 1px 0 rgba(40, 252, 245, 1);
             font-weight: normal;
@@ -38,6 +35,18 @@
             text-align: right;
             font-family: comic sans, comic sans ms, cursive, verdana, arial, sans-serif;
             line-height: 0;
+        }
+        .turn:hover {
+
+            -moz-transform: translate(60em,0);
+            -ms-transform: translate(60em,0);
+            -webkit-transform: translate(60em,0);
+            -o-transform: translate(60em,0);
+            transform: translate(60em,0);
+            -webkit-transition: all 6s ease-in-out;
+            -moz-transition: all 6s ease-in-out;
+            -o-transition: all 6s ease-in-out;
+            -ms-transition: all 6s ease-in-out;
         }
     </style>
 </head>
@@ -133,11 +142,11 @@
             <h1> Главная страница</h1>
         </div>
         <h3>ываываываываываав</h3>
-
-        <div id="test" style="width: 200px; height: 200px; background-color: #222222;"></div>
     </div>
     <!--<div id="about" ><a href="#about" style="text-decoration:none;">About us</a></div>-->
     <div class="about">About us</div>
+
+    <p><img style="" class="turn"  src="../img/michail.jpg"  /></p>
 </div>
 
 
@@ -148,6 +157,40 @@
         var message =  null;
         ws.onopen = function () {
 //            alert("Connection opened...")
+    $('.hoov #add_contact').on('click', function () {
+        var userId = $(this).find('span').text();
+        var data = {
+            "userId": userId
+        };
+
+        $.ajax({
+            type: "GET",
+            url: '/add_contact',
+            dataType: "json",
+            success: function (ans) {
+                var html = new EJS({url: ' /views/add_contact.ejs'}).render(ans);
+                $('#content').html(html);
+            }
+        });
+        var html = new EJS({url: ' /views/add_contact.ejs'}).render();
+        $('#content').html(html);
+    });
+    $("#tabs").tabs();
+    $(".hoov").hover(
+            function () {
+                $(this).toggleClass("hoov1");
+            }, function () {
+                $(this).toggleClass("hoov1");
+            }
+    );
+    $(function () {
+        $(document).tooltip();
+    });
+
+    $('#tab1 div').on('click', function () {
+        var userId = $(this).find('span').text();
+        var data = {
+            "userId": userId
         };
         ws.onclose = function () {
 //            alert("Connection closed...")
