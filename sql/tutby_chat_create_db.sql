@@ -45,7 +45,7 @@ ALTER TABLE `tutby_chat`.`messeges` CHANGE COLUMN `id_sender` `user` VARCHAR(30)
    ;
    insert into status
    values
-   (1,'online'),(2,'away'),(3,'busy'),(4,'offline')
+   (1,'online'),(2,'away'),(3,'busy'),(0,'offline')
    ;
 --    messAges
 --    user ID
