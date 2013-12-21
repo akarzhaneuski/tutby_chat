@@ -4,7 +4,6 @@ var crypto = require('crypto');
 var chatModule = require('./chat_module');
 var app = express();
 
-
 app.use(express.logger("dev"));
 app.use(express.cookieParser());
 app.use(express.session({secret: 'MISHADOLBOEB'}));
@@ -37,7 +36,6 @@ connection.connect(function (err) {
 
 function checkAuth(req, res, next) {
     if (req.session.user_id) {
-        hello(req.session.user_id);
         next();
     } else {
         res.redirect('/login');
@@ -57,54 +55,55 @@ app.get('/registration', function (req, res) {
 });
 app.post('/login', function (req, res) {
     var user = req.body.user;
-    var password = req.body.password;
-    var hash_password = crypto.createHash('sha1').update(password).digest('hex');
+    var password =req.body.password;
+    var hash_password=crypto.createHash('sha1').update(password).digest('hex');
     var sql = "SELECT password,id FROM users WHERE login = ?";
-    connection.query(sql, [user], function (err, results) {
-        if (results[0] == undefined) {
-            console.log("Login failure for %s!", user);
+    connection.query(sql,[user], function(err, results) {
+        if( results[0] == undefined ){
+            console.log("Login failure for %s!",user);
             res.redirect('/login');
-        } else {
-            if (results[0].password == hash_password) {
-                req.session.user_id = results[0].id;
-                console.log("Login success for %s!", user);
+        }else{
+            if(results[0].password == hash_password)
+            {
+                req.session.user_id=results[0].id;
+                console.log("Login success for %s!",user);
                 res.redirect('/main');
-            } else {
-                console.log("Login failure for %s!", user);
+            }else{
+                console.log("Login failure for %s!",user);
                 res.redirect('/login');
             }
         }
     });
 });
-app.post('/registration', function (req, res) {
+app.post('/registration',function(req, res){
     var user = req.body.user;
-    var password = req.body.password;
-    var hash_password = crypto.createHash('sha1').update(password).digest('hex');
+    var password =req.body.password;
+    var hash_password=crypto.createHash('sha1').update(password).digest('hex');
     var sql = "SELECT login FROM users WHERE login = ? ";
-    connection.query(sql, [user], function (err, results) {
-        if (results[0] == undefined) {
+    connection.query(sql,[user],function(err, results) {
+        if(results[0] == undefined){
             var sql = "INSERT INTO users(login,password)  VALUES( ?,? )";
-            connection.query(sql, [user, hash_password], function (err, results) {
+            connection.query(sql,[user,hash_password],function(err, results){
             });
-            console.log('Registration success for %s!', user);
+            console.log('Registration success for %s!',user);
             res.redirect('/login');
-        } else {
-            console.log('Registration failure for %s!', user);
+        }else{
+            console.log('Registration failure for %s!',user);
             res.redirect('/registration');
         }
     });
 
 });
-app.get('/logout', checkAuth, function (req, res) {
-    req.session.user_id = undefined;
+app.get('/logout',checkAuth, function (req,res){
+    req.session.user_id=undefined;
     res.redirect('/login');
 });
 
-app.get('/set_offline', checkAuth, function (req, res) {
+app.get('/set_offline',checkAuth, function (req, res) {
     var user_id = req.session.user_id;
-    connection.query("update users set status = 0 where id= ? ;", [user_id], function (err, rows) {
+    connection.query("update users set status = 0 where id= ? ;",[user_id], function(err, rows){
         // There was a error or not?
-        if (err != null) {
+        if(err != null) {
             res.end("Query error:" + err);
             connection.end();
         } else {
@@ -115,25 +114,25 @@ app.get('/set_offline', checkAuth, function (req, res) {
     console.log('now im offline');
     res.redirect('back');
 });
-app.get('/set_online', checkAuth, function (req, res) {
+app.get('/set_online',checkAuth, function (req, res) {
     var user_id = req.session.user_id;
-    connection.query("update users set status=1 where id= ? ;", [user_id], function (err, rows) {
-        if (err != null) {
+    connection.query("update users set status=1 where id= ? ;",[user_id], function(err, rows){
+        if(err != null) {
             res.end("Query error:" + err);
             connection.end();
         } else {
             // Shows the result on console window
-            console.log("Status changed on away");
+            console.log("Status changed on online");
         }
     });
     console.log('now im online');
     res.redirect('back');
 });
-app.get('/set_out', checkAuth, function (req, res) {
+app.get('/set_out',checkAuth, function (req, res) {
     var user_id = req.session.user_id;
-    connection.query("update users set status=2 where id= ? ;", [user_id], function (err, rows) {
+    connection.query("update users set status=2 where id= ? ;",[user_id],function(err, rows){
         // There was a error or not?
-        if (err != null) {
+        if(err != null) {
             res.end("Query error:" + err);
             connection.end();
         } else {
@@ -144,11 +143,11 @@ app.get('/set_out', checkAuth, function (req, res) {
     console.log('now im out');
     res.redirect('back');
 });
-app.get('/set_busy', checkAuth, function (req, res) {
+app.get('/set_busy',checkAuth, function (req, res) {
     var user_id = req.session.user_id;
-    connection.query("update users set status=3 where id= ? ;", [user_id], function (err, rows) {
+    connection.query("update users set status=3 where id= ? ;",[user_id], function(err, rows){
         // There was a error or not?
-        if (err != null) {
+        if(err != null) {
             res.end("Query error:" + err);
             connection.end();
         } else {
@@ -160,7 +159,7 @@ app.get('/set_busy', checkAuth, function (req, res) {
     res.redirect('back');
 });
 
-app.post('/showUserDialog', checkAuth, function (req, res) {
+app.post('/showUserDialog',checkAuth, function (req, res) {
     var userName = 'Not found';
     var id = parseInt(req.body.userId);
 // Получение инфы  о юзере
