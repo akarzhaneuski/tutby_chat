@@ -1,5 +1,21 @@
+var mysql = require('mysql');
 var users = [];
 
+var mysql_connection = mysql.createConnection({
+    user: "root",
+    password: "root",
+    database: "tutby_chat",
+    port: "3306",
+    host: "localhost"
+});
+mysql_connection.connect(function (err) {
+    if (err != null) {
+        console.log("Error connecting to mysql");
+    } else {
+        console.log("Connected to mysql");
+    }
+    // connected! (unless `err` is set)
+});
 
 function isExistsListener(chanel, user) {
     var length = users.length;
@@ -18,7 +34,7 @@ exports.addNewListener = function (chanel, user, connection) {
             user: user,
             connection: connection
         });
-        //console.log(users);
+//        console.log(users);
     }
 }
 
@@ -27,8 +43,24 @@ exports.getAllUsersByChanel = function (chanel) {
     var length = users.length;
     for (var i = 0; i < length; ++i) {
         if (users[i].chanel == chanel) {
+            ret.push(users[i].connection);
         }
-        ret.push(users[i].connection);
     }
     return ret;
 }
+
+exports.updateUserActivity = function (id) {
+    var sql = "UPDATE users SET last_activity=now() WHERE id=?";
+    mysql_connection.query(sql, [id], function (err, results) {
+    });
+}
+
+
+
+
+
+
+
+
+
+

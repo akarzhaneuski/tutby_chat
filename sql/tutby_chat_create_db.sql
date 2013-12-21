@@ -39,6 +39,9 @@ ALTER TABLE `tutby_chat`.`messeges` CHANGE COLUMN `id_sender` `user` VARCHAR(30)
    ALTER TABLE `tutby_chat`.users DROP index id_UNIQUE;
    ALTER TABLE `tutby_chat`.friend ADD index (giving, accepting);
 
+    ALTER TABLE `tutby_chat`.messeges CHANGE COLUMN time time TIMESTAMP;
+    ALTER TABLE `tutby_chat`.users ADD COLUMN last_activity TIMESTAMP;
+
    insert into `tutby_chat`.users
    value
    (1,'Adminius','12345',0,0,'offline')

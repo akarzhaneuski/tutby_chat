@@ -4,6 +4,7 @@ var crypto = require('crypto');
 var chatModule = require('./chat_module');
 var app = express();
 
+
 app.use(express.logger("dev"));
 app.use(express.cookieParser());
 app.use(express.session({secret: 'MISHADOLBOEB'}));
@@ -36,6 +37,7 @@ connection.connect(function (err) {
 
 function checkAuth(req, res, next) {
     if (req.session.user_id) {
+        hello(req.session.user_id);
         next();
     } else {
         res.redirect('/login');
@@ -57,7 +59,6 @@ app.post('/login', function (req, res) {
     var user = req.body.user;
     var password = req.body.password;
     var hash_password = crypto.createHash('sha1').update(password).digest('hex');
-    ;
     var sql = "SELECT password,id FROM users WHERE login = ?";
     connection.query(sql, [user], function (err, results) {
         if (results[0] == undefined) {
