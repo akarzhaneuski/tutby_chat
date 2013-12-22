@@ -66,6 +66,7 @@ app.post('/login', function (req, res) {
             if(results[0].password == hash_password)
             {
                 req.session.user_id=results[0].id;
+                res.cookie("user_id", results[0].id);
                 console.log("Login success for %s!",user);
                 res.redirect('/main');
             }else{

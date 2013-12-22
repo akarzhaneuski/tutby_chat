@@ -41,6 +41,13 @@ wsServer.on('request', function (request) {
     console.log((new Date()) + ' Connection from origin ' + request.origin + '.');
     var connection = request.accept(null, request.origin);
 
+    var userid;
+    for (var i = 0; i < request.cookies.length; ++i) {
+        if (request.cookies[i].name == "user_id") {
+            userid = parseInt(request.cookies[i].value);
+        }
+    }
+
 //    connection.sendUTF(JSON.stringify({name: 'Vasya' }))
     connection.on('message', function (message) {
         if (message.type === 'utf8') {
@@ -54,7 +61,7 @@ wsServer.on('request', function (request) {
                     // start listen chanel
                     // ПРОВЕРКА ПРАВ!!
                     // take username from session
-                    userChatDAO.addNewListener(chanel, userId, connection);
+                    userChatDAO.addNewListener(chanel, userid, connection);
                     chatDAO.getMessagesByChanel(chanel, function (err, results) {
                         connection.sendUTF(JSON.stringify({
                             "type": "showMessages",
@@ -64,7 +71,7 @@ wsServer.on('request', function (request) {
                     break;
                 case 'sendMessage' :
                     var sql = "SELECT login FROM users WHERE id=?";
-                    mysql_connection.query(sql, [userId], function (err, results) {
+                    mysql_connection.query(sql, [userid], function (err, results) {
                         var login;
                         console.log("send message");
                         // проверить права + логин из сессии
@@ -89,11 +96,9 @@ wsServer.on('request', function (request) {
     connection.on('close', function (connection) {
         // close user connection
     });
-})
-;
+});
 
 
 module.exports = hello = function (id) {
-    console.log("asdas" + id);
     userId = id;
 };
