@@ -3,7 +3,8 @@ var chatMessages = [];
 
 var mysql_connection = mysql.createConnection({
     user: "root",
-    password: "root",
+    password: "GitHub", // Ilya's password
+    //password: "hello",
     database: "tutby_chat",
     port: "3306",
     host: "localhost"

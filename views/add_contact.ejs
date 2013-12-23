@@ -34,12 +34,31 @@
         <p>Enter the name below:</p>
         <textarea name="Add_contact_textarea" cols="20" rows="1"></textarea>
 
-        <p><input type="button" value="Add friend"></p>
+        <p><input id="send" type="button" value="Add friend"></p>
 
         <p style="cursor: pointer;" onclick="document.getElementById('parent_popup').style.display='none';">Закрыть</p>
     </div>
 </div>
 <div>
+    <script>
+        $('#send').on('click', function () {
+            var data = {
+                "typedName": $("#parent_popup textarea").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: '/add_contact',
+                dataType: "json",
+                data: data,
+                success: function (ans) {
+                    var html = new EJS({url: ' /views/add_contact.ejs'}).render(ans);
+                    $('#content').html(html);
+                }
+            });
+            var html = new EJS({url: ' /views/add_contact.ejs'}).render();
+            $('#content').html(html);
+        });
+    </script>
 
 </div>
 </body>
