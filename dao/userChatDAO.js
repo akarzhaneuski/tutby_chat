@@ -3,7 +3,8 @@ var users = [];
 
 var mysql_connection = mysql.createConnection({
     user: "root",
-    password: "root",
+   // password: "hello",
+    password: "GitHub", // Ilya's password
     database: "tutby_chat",
     port: "3306",
     host: "localhost"

@@ -4,9 +4,11 @@ var crypto = require('crypto');
 var chatModule = require('./chat_module');
 var app = express();
 
+var checkRegExp = /[0-9a-zA-Z]{8,40}/;
+
 app.use(express.logger("dev"));
 app.use(express.cookieParser());
-app.use(express.session({secret: 'MISHADOLBOEB'}));
+app.use(express.session({secret: 'secret cat'}));
 app.use(express.urlencoded());
 app.use(express.json());
 app.use(app.router);
@@ -20,7 +22,8 @@ app.use('/views', express.static(__dirname + '/views'));
 
 var connection = mysql.createConnection({
     user: "root",
-    password: "root",
+   // password: "hello",
+    password: "GitHub", // Ilya's password
     database: "tutby_chat",
     port: "3306",
     host: "localhost"
@@ -33,7 +36,6 @@ connection.connect(function (err) {
     }
     // connected! (unless `err` is set)
 });
-
 function checkAuth(req, res, next) {
     if (req.session.user_id) {
         next();
@@ -56,6 +58,12 @@ app.get('/registration', function (req, res) {
 app.post('/login', function (req, res) {
     var user = req.body.user;
     var password =req.body.password;
+//    if(!checkRegExp.test(user)){
+//        res.render('/login');
+ //   }
+ //   if(!checkRegExp.test(password)){
+ //       res.render('/login');
+//    }
     var hash_password=crypto.createHash('sha1').update(password).digest('hex');
     var sql = "SELECT password,id FROM users WHERE login = ?";
     connection.query(sql,[user], function(err, results) {
@@ -79,6 +87,12 @@ app.post('/login', function (req, res) {
 app.post('/registration',function(req, res){
     var user = req.body.user;
     var password =req.body.password;
+ //   if(!checkRegExp.test(user)){
+ //       res.render('/registration');
+ //   }
+//    if(!checkRegExp.test(password)){
+//        res.render('/registration');
+//    }
     var hash_password=crypto.createHash('sha1').update(password).digest('hex');
     var sql = "SELECT login FROM users WHERE login = ? ";
     connection.query(sql,[user],function(err, results) {
@@ -159,7 +173,29 @@ app.get('/set_busy',checkAuth, function (req, res) {
     console.log('now im busy');
     res.redirect('back');
 });
+app.post('/add_contact',function(req, res){
+    console.log("I am here.");
+    var activeUser = req.session.user_id;
+    var friend = req.body.typedName;
+    var sql0 = "SELECT id FROM users WHERE login = ? ";
+    connection.query(sql0,[friend],function(err, results) {
 
+        if(results[0] == undefined){
+            console.log('Add friend failed for %s!',friend);
+            console.log('Add friend also failed for active %s!',activeUser);
+            res.redirect('/add_contact');}
+        var res1=results[0].id;
+        var sql = "INSERT IGNORE INTO friend VALUES (?,?)";
+        var activeUser2 = req.session.user_id;
+        var i= connection.query(sql,[res1,activeUser2],function(err, results) {
+        });
+        console.log(i.sql);
+        var j= connection.query(sql,[activeUser2,res1],function(err, results) {
+        });
+        console.log(j.sql);
+    });
+
+});
 app.post('/showUserDialog',checkAuth, function (req, res) {
     var userName = 'Not found';
     var id = parseInt(req.body.userId);
@@ -185,4 +221,4 @@ app.post('/showUserDialog',checkAuth, function (req, res) {
 
 });
 
-app.listen(process.env.PORT || 8080);
+app.listen(process.env.PORT || 8083);
