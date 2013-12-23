@@ -75,6 +75,11 @@ wsServer.on('request', function (request) {
                         var login;
                         console.log("send message");
                         // проверить права + логин из сессии
+                        var lt = /</g,
+                            gt = />/g,
+                            ap = /'/g,
+                            ic = /"/g;
+                        data.message = data.message.toString().replace(lt, "&lt;").replace(gt, "&gt;").replace(ap, "&#39;").replace(ic, "&#34;");
                         chatDAO.addMessage(data.message, data.chanel, results[0].login);
                         // отправить всем кроме этого юзера, дописать
                         var chanelUsers = userChatDAO.getAllUsersByChanel(parseInt(data.chanel));
@@ -87,6 +92,14 @@ wsServer.on('request', function (request) {
                                 "chanel": data.chanel
                             }));
                         }
+                    });
+                    break;
+                case 'findFriensReq':
+                    userChatDAO.getUsersLikeLogin(data.login, function (err, result) {
+                        connection.sendUTF(JSON.stringify({
+                            "type": "findFriends",
+                            "users": result
+                        }));
                     });
                     break;
             }
